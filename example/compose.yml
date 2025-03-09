@@ -1,0 +1,40 @@
+name: docker-reload-example
+
+services:
+  reader:
+    labels:
+      watch-category: reader
+    image: busybox
+    volumes:
+      - ./watchdir:/watchdir:ro
+    stop_signal: SIGKILL
+    command: >-
+      sh -c '
+        date;
+        cat /watchdir/file;
+        sleep 100;
+      '
+
+  writer:
+    image: busybox
+    volumes:
+      - ./watchdir:/watchdir
+    stop_signal: SIGKILL
+    restart: no
+    # output redirect (>) performs a double write which is confusing for
+    # inotify. solution: use tee
+    command: >-
+      sh -c '
+        sleep 10;
+        echo writing file;
+        cat /dev/urandom | head -c 20 | base64 | tee /watchdir/file;
+      '
+
+  docker-reload:
+    build:
+      context: ..
+    volumes:
+      - ./config.yml:/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./watchdir:/watchdir:ro
+    command: -log-level trace

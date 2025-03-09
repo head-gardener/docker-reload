@@ -1,0 +1,6 @@
+watchers:
+  - paths:
+      - file: "/watchdir/file"
+    selector:
+      label: "watch-category=reader"
+    action: "restart"

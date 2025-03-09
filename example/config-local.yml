@@ -1,0 +1,8 @@
+watchers:
+  - paths:
+      - dir: "./example/watchdir"
+        globs: ["file"]
+      - file: "./example/config.yml"
+    selector:
+      label: "watch-category=reader"
+    action: "restart"
