@@ -55,7 +55,7 @@ func NewConfig() *Config {
 	var config Config
 	config.Default.makeDefault()
 
-	configFile := flag.String("config", "./config.yml", "config path")
+	configFile := flag.String("config", "./docker-reload.yml", "config path")
 	logLevel := flag.String("log-level", "info", "log level")
 	flag.Parse()
 

@@ -1,6 +1,11 @@
+default:
+  hash: "sha1"
+
 watchers:
   - paths:
-      - file: "/watchdir/file"
+      - dir: "./example/watchdir"
+        globs: ["file"]
+      - file: "./example/config.yml"
     selector:
       label: "watch-category=reader"
     action: "restart"

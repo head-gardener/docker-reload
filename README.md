@@ -9,6 +9,8 @@ hashes. Memory footprint is about 5-10MB per watcher.
 
 ## Example configuration
 
+Default path is `./docker-reload.yml`. Configurable via `-config` flag.
+
 ```yaml
 watchers:
   - paths:

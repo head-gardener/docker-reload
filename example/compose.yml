@@ -1,5 +1,15 @@
 name: docker-reload-example
 
+configs:
+  docker-reload.yml:
+    content: |
+      watchers:
+        - paths:
+            - file: "/watchdir/file"
+          selector:
+            label: "watch-category=reader"
+          action: "restart"
+
 services:
   reader:
     labels:
@@ -33,8 +43,9 @@ services:
   docker-reload:
     build:
       context: ..
+    configs:
+      - docker-reload.yml
     volumes:
-      - ./config.yml:/config.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./watchdir:/watchdir:ro
     command: -log-level trace
