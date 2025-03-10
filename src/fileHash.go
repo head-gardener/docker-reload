@@ -11,8 +11,6 @@ import (
 	"os"
 )
 
-const DefaultHashFunction = "sha256"
-
 func parseHashFunction(f string) (hash.Hash, error) {
 	switch f {
 	case "sha1":

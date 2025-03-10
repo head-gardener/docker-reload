@@ -1,3 +1,6 @@
+default:
+  hash: "sha1"
+
 watchers:
   - paths:
       - dir: "./example/watchdir"

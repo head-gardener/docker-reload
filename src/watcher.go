@@ -46,9 +46,6 @@ func (p *PathSpec) simplify() error {
 func (w *Watcher) configure() (count int, err error) {
 	w.dirs = make([]string, 0, len(w.cfg.PathSpec))
 
-	if w.cfg.Hash == "" {
-		w.cfg.Hash = DefaultHashFunction
-	}
 	hashFunc, err := parseHashFunction(w.cfg.Hash)
 	if err != nil {
 		log.Errorf("Error parsing hash function %v", err)
