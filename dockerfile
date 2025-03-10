@@ -9,7 +9,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build ./src -o docker-reload
+RUN go build -o docker-reload ./src
 
 
 FROM alpine
