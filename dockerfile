@@ -3,11 +3,17 @@ FROM golang:1.23-alpine AS base
 
 WORKDIR /build
 
+RUN apk add git
+
+ARG DOCKER_VERSION=v27.5.1+incompatible
+
 COPY go.mod go.sum ./
+
+RUN go get github.com/docker/docker@${DOCKER_VERSION}
 
 RUN go mod download
 
-COPY . .
+COPY ./src ./src
 
 RUN go build -o docker-reload ./src
 
