@@ -187,7 +187,9 @@ func (w *Watcher) handleEvent(filePath string) {
 	log.Tracef("Hashes differ, was: %s have: %s", previousHash, currentHash)
 
 	w.hashes[filePath] = currentHash
-	log.Infof("Detected change in %s", filePath)
+	log.WithFields(log.Fields{
+		"file": filePath,
+	}).Info("Detected change")
 	w.triggerAction()
 }
 
@@ -217,14 +219,17 @@ func (w *Watcher) triggerAction() {
 	}
 
 	for _, ctr := range containers {
+		log.WithFields(log.Fields{
+			"container": ctr.Names[0],
+			"id": ctr.ID[:12],
+			"action": w.cfg.Action,
+		}).Info("Action triggered")
 		switch w.cfg.Action {
 		case "restart":
-			log.Infof("Restarting container %s (%s)", ctr.Names[0], ctr.ID[:12])
 			if err := w.client.ContainerRestart(ctx, ctr.ID, container.StopOptions{}); err != nil {
 				log.Errorf("Error restarting container %s: %v", ctr.ID[:12], err)
 			}
 		case "sighup":
-			log.Infof("Sending SIGHUP to container %s (%s)", ctr.Names[0], ctr.ID[:12])
 			if err := w.client.ContainerKill(ctx, ctr.ID, "SIGHUP"); err != nil {
 				log.Errorf("Error sending SIGHUP to container %s: %v", ctr.ID[:12], err)
 			}
