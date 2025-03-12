@@ -16,9 +16,13 @@ build:
   docker build --build-arg DOCKER_VERSION=v28.0.1+incompatible -t "$IMAGE_PATH:v28" .
 
 push:
+  docker tag "$IMAGE_PATH:v27" "$IMAGE_PATH:latest"
+  echo -n "latest v25 v26 v27 v28" | xargs -d' ' -tI {} docker push "$IMAGE_PATH:{}"
+
+push-release:
   #!/usr/bin/env bash
   set -ex
-  tag="$(git describe --tags)"
+  tag="$(git describe --tags --exact-match)"
   echo -n "v25 v26 v27 v28" | xargs -d' ' -tI {} docker tag "$IMAGE_PATH:{}" "$IMAGE_PATH:$tag-{}"
   docker tag "$IMAGE_PATH:v27" "$IMAGE_PATH:latest"
   docker tag "$IMAGE_PATH:v27" "$IMAGE_PATH:$tag"
